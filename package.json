@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "name": "@dependable/devtools",
+  "version": "0.0.1",
+  "description": "Chrome development tools for @dependable/state",
+  "main": "./src/index.js",
+  "keywords": ["dependable", "observable", "state", "devtools"],
+  "author": "Sune Simonsen",
+  "license": "MIT",
+  "bugs": "https://github.com/sunesimonsen/dependable-devtools/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunesimonsen/dependable-devtools"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "build": "rm -rf dist && rollup -c rollup.config.js",
+    "watch": "rollup -c rollup.config.js --watch",
+    "preview": "relivestyle --port 5001 ."
+  },
+  "devDependencies": {
+    "@dependable/session": "^0.11.0",
+    "@dependable/state": "^0.18.1",
+    "@dependable/view": "^0.14.1",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^23.0.0",
+    "@rollup/plugin-node-resolve": "^14.1.0",
+    "babel-plugin-htm": "^3.0.0",
+    "babel-plugin-stylewars": "^0.1.0",
+    "debounce": "^1.2.1",
+    "relivestyle": "^1.0.0-11",
+    "rollup": "^2.27.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "stylewars": "^2.1.0"
+  }
+}
