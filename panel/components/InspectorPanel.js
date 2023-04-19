@@ -1,18 +1,19 @@
 import { html } from "@dependable/view";
 import { css } from "stylewars";
-import { InspectionSearchInput } from "./InspectionSearchInput.js";
+import { Inspector } from "./Inspector.js";
+import { inspected } from "../state.js";
 
 const styles = css`
   & {
-    padding: 10px;
+    padding: 30px;
   }
 `;
 
-export class MainToolbar {
+export class InspectorPanel {
   render() {
     return html`
       <div className=${styles}>
-        <${InspectionSearchInput} />
+        <${Inspector} value=${inspected()} />
       </div>
     `;
   }
