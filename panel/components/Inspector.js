@@ -125,10 +125,10 @@ const objectToSummary = (value) => {
 };
 
 class CollapsibleKeyValue {
-  constructor() {
-    this.open = observable(false);
+  constructor({ expanded = false }) {
+    this.expanded = observable(expanded);
     this.onToggle = (event) => {
-      this.open(event.target.open);
+      this.expanded(event.target.open);
     };
   }
 
@@ -144,9 +144,9 @@ class CollapsibleKeyValue {
     return html`
       <dt>${key}</dt>
       <dd>
-        <details onToggle=${this.onToggle}>
+        <details open=${this.expanded()} onToggle=${this.onToggle}>
           <summary>${objectToSummary(value)}</summary>
-          ${this.open() && this.renderDetails()}
+          ${this.expanded() && this.renderDetails()}
         </details>
       </dd>
     `;
@@ -173,6 +173,10 @@ function resolveReference(value) {
 class Entries {
   render({ entries }) {
     return entries.map(([key, value]) => {
+      const expanded = value.$expanded;
+      if (expanded) {
+        value = expanded;
+      }
       const resolvedValue = resolveReference(value);
 
       if (
@@ -183,7 +187,11 @@ class Entries {
         return html`<${KeyValue} key=${key} value=${resolvedValue} />`;
       } else {
         return html`
-          <${CollapsibleKeyValue} key=${key} value=${resolvedValue} />
+          <${CollapsibleKeyValue}
+            expanded=${expanded}
+            key=${key}
+            value=${resolvedValue}
+          />
         `;
       }
     });
@@ -269,6 +277,10 @@ class AnyInspector {
       case "object":
         if (!value) {
           return html`<${NullInspector} value=${value} />`;
+        }
+
+        if (value.$expanded) {
+          value = value.$expanded;
         }
 
         if (value.$reference) {

@@ -1,9 +1,15 @@
+import { state } from "../state.js";
+
+function resolveReference(value) {
+  if (!value || typeof value !== "object" || !value.$reference) {
+    return value;
+  }
+
+  return resolveReference(state().observables[value.$reference]);
+}
+
 const objectMatches = (node, term) => {
   for (const [key, value] of Object.entries(node)) {
-    if (key.toLowerCase().includes(term)) {
-      return 1;
-    }
-
     const depth = nodeMatches(value, term);
     if (depth != -1) {
       return depth + 1;
@@ -14,6 +20,8 @@ const objectMatches = (node, term) => {
 };
 
 const nodeMatches = (node, term) => {
+  node = resolveReference(node);
+
   if (node && typeof node === "object") {
     return objectMatches(node, term);
   }
@@ -32,15 +40,22 @@ const nodeMatches = (node, term) => {
 const filterObject = (node, term) => {
   const result = {};
 
-  for (const [key, value] of Object.entries(node)) {
-    const depth = nodeMatches(value, term);
+  const entries = Object.entries(node);
 
-    if (depth === 0) {
-      return node;
+  const containsObjects = entries.some(
+    ([_, value]) => value && typeof value === "object"
+  );
+
+  for (const [key, value] of entries) {
+    const resolverdvalue = resolveReference(value);
+    const depth = nodeMatches(resolverdvalue, term);
+
+    if (depth === 0 && containsObjects) {
+      return { $expanded: node };
     }
 
-    if (depth > 0) {
-      result[key] = filterNode(value, term);
+    if (depth > -1) {
+      result[key] = filterNode(resolverdvalue, term);
     }
   }
 
@@ -48,15 +63,19 @@ const filterObject = (node, term) => {
 };
 
 export const filterNode = (node, term) => {
+  node = resolveReference(node);
+
   if (node && typeof node === "object") {
     return filterObject(node, term);
   }
 
   if (Array.isArray(node)) {
-    return node.map((v) => filterNode(v, term));
+    const depth = nodeMatches(node, term);
+    return node.map((v) => filterNode(v, term)).filter(Boolean);
   }
 
   return node;
 };
 
-export const filterTree = (node, term) => filterNode(node, term.toLowerCase());
+export const filterTree = (node, term) =>
+  term ? filterNode(node, term.toLowerCase()) : node;
