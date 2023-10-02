@@ -29,9 +29,9 @@
     "preview": "relivestyle --port 5001 ."
   },
   "devDependencies": {
-    "@dependable/session": "^0.11.0",
-    "@dependable/state": "^0.18.1",
-    "@dependable/view": "^0.14.1",
+    "@dependable/session": "^0.13.0",
+    "@dependable/state": "^0.19.0",
+    "@dependable/view": "^0.17.0",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^23.0.0",
     "@rollup/plugin-node-resolve": "^14.1.0",
