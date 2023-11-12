@@ -4,12 +4,7 @@
   "version": "0.0.1",
   "description": "Chrome development tools for @dependable/state",
   "main": "./src/index.js",
-  "keywords": [
-    "dependable",
-    "observable",
-    "state",
-    "devtools"
-  ],
+  "keywords": ["dependable", "observable", "state", "devtools"],
   "author": "Sune Simonsen",
   "license": "MIT",
   "bugs": "https://github.com/sunesimonsen/dependable-devtools/issues",
@@ -29,9 +24,10 @@
     "preview": "relivestyle --port 5001 ."
   },
   "devDependencies": {
-    "@dependable/session": "^0.13.0",
-    "@dependable/state": "^0.19.0",
-    "@dependable/view": "^0.17.0",
+    "@dependable/debounce": "^0.1.1",
+    "@dependable/session": "^0.14.0",
+    "@dependable/state": "^0.20.0",
+    "@dependable/view": "^0.18.0",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^23.0.0",
     "@rollup/plugin-node-resolve": "^14.1.0",

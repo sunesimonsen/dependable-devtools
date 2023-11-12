@@ -1,6 +1,6 @@
 import { observable, computed } from "@dependable/state";
 import { filterTree } from "./utils/filterTree.js";
-import { debouncedObservable } from "./utils/debouncedObservable.js";
+import { debounce } from "@dependable/debounce";
 
 const isAnonymous = (id) => id.startsWith("$");
 
@@ -11,7 +11,7 @@ export const state = observable(
 
 export const inspectedId = observable(null, { id: "inspectedId" });
 export const searchText = observable("", { id: "searchText" });
-const debouncedSearchText = debouncedObservable(searchText);
+const debouncedSearchText = debounce(searchText, 300);
 
 export const subscribableIds = computed(
   () =>
